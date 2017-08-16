@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,Sizeof," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="本文翻译Sizeof for Java,翻译水平有限,如有出入请多包含. 2003年12月26日 Q：Java中有没有一个操作类似C中的sizeOf？ A：一个浅显的答案是Java不提供类似C中的sizeOf方法。但是让我们值得考虑的是为什么Java程序员偶尔想要使用它。 C程序员需要自己去管理大多数的数据结构的内存分配，并且对于知道要分配内存块的大小，sizeof()这个方法就显得或不可缺了。">
+<meta name="keywords" content="Java,Sizeof">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中的Sizeof(对象大小的重新审视)">
+<meta property="og:url" content="http://yoursite.com/2017/08/16/sizeOf/index.html">
+<meta property="og:site_name" content="bainily">
+<meta property="og:description" content="本文翻译Sizeof for Java,翻译水平有限,如有出入请多包含. 2003年12月26日 Q：Java中有没有一个操作类似C中的sizeOf？ A：一个浅显的答案是Java不提供类似C中的sizeOf方法。但是让我们值得考虑的是为什么Java程序员偶尔想要使用它。 C程序员需要自己去管理大多数的数据结构的内存分配，并且对于知道要分配内存块的大小，sizeof()这个方法就显得或不可缺了。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-16T13:36:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java中的Sizeof(对象大小的重新审视)">
+<meta name="twitter:description" content="本文翻译Sizeof for Java,翻译水平有限,如有出入请多包含. 2003年12月26日 Q：Java中有没有一个操作类似C中的sizeOf？ A：一个浅显的答案是Java不提供类似C中的sizeOf方法。但是让我们值得考虑的是为什么Java程序员偶尔想要使用它。 C程序员需要自己去管理大多数的数据结构的内存分配，并且对于知道要分配内存块的大小，sizeof()这个方法就显得或不可缺了。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/16/sizeOf/"/>
+
+
+
+
+
+  <title>Java中的Sizeof(对象大小的重新审视) | bainily</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">bainily</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/16/sizeOf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="bainily">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bainily">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java中的Sizeof(对象大小的重新审视)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T16:14:33+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/翻译/" itemprop="url" rel="index">
+                    <span itemprop="name">翻译</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/16/sizeOf/" class="leancloud_visitors" data-flag-title="Java中的Sizeof(对象大小的重新审视)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文翻译<a href="http://www.javaworld.com/article/2077408/core-java/sizeof-for-java.html" target="_blank" rel="external">Sizeof for Java</a>,翻译水平有限,如有出入请多包含.</p>
+<p>2003年12月26日</p>
+<p>Q：Java中有没有一个操作类似C中的sizeOf？</p>
+<p>A：一个浅显的答案是Java不提供类似C中的sizeOf方法。但是让我们值得考虑的是为什么Java程序员偶尔想要使用它。</p>
+<p>C程序员需要自己去管理大多数的数据结构的内存分配，并且对于知道要分配内存块的大小，sizeof()这个方法就显得或不可缺了。此外，C的内存分配程序，比如malloc()，直到对象初始化的时候才会去进行分配内存：程序员必须设置所有的对象字段指向其他的对象。但是当所有的数据结构被编译时，C/C++的内存分配是相当高效的。</p>
+<p>相比之下，Java对象的分配和构造是捆绑在一起的（不可能使用已经分配内存但是没有初始化的对象实例）。如果Java类中定义了指向其他对象的字段，那么一般情况下在初始化的时候也需要初始化这些对象。因此，分配一个Java对象的内存通常需要分配大量的互连的对象实例的内存：一个对象图。加上自动垃圾收集，这一切就太方便了以致让你觉得再也不用担心Java的内存分配细节。</p>
+<p>当然，这对于一些简单的Java应用程序是有效的。相比C/C++，等效的Java数据结构往往会占用更多的物理内存。在企业软件开发中，现在32位JVM上最大的可用虚拟内存是一个常见的扩展性限制(译注:就是说内存不够用)。因此Java程序员可以受益于sizeof()或者类似的功能，以关注数据结构是否太大或者包含内存瓶颈。幸运的是，Java的反射允许你能编写出这样一个简单的工具。</p>
+<p>在继续之前，我想纠正关于这篇文章一些问题的不正确回答。</p>
+<h4 id="谬误：Sizeof-并不需要，因为Java的基础类型的大小是固定的"><a href="#谬误：Sizeof-并不需要，因为Java的基础类型的大小是固定的" class="headerlink" title="谬误：Sizeof()并不需要，因为Java的基础类型的大小是固定的"></a>谬误：Sizeof()并不需要，因为Java的基础类型的大小是固定的</h4><p>是的，一个Java的int在所有JVM平台上都是32位的，但这只是Java语言规范所要求的，表示程序员所感知的数据类型的宽度。这样一个int本质上是一个抽象的数据类型，而在64位机器上以64位字节的方式备份(表示)这个int。非基本类型也是如此：Java语言规范也没有申明类字段在物理内存中应该怎么对齐，或者在JVM中一组布尔变量不能被实现成一个紧凑的位向量。(译注：不能理解，翻译有些问题)</p>
+<h4 id="谬误：你可以通过序列化对象成一个字节流并查看字节流的长度来测量一个对象的大小"><a href="#谬误：你可以通过序列化对象成一个字节流并查看字节流的长度来测量一个对象的大小" class="headerlink" title="谬误：你可以通过序列化对象成一个字节流并查看字节流的长度来测量一个对象的大小"></a>谬误：你可以通过序列化对象成一个字节流并查看字节流的长度来测量一个对象的大小</h4><p>这种方式不行的原因是，序列化流只是真正内存布局的远程反映。通过观察Strings如何被序列化这个简单的方式来了解它：在内存中每个char至少2个字节，但是序列化格式的Strings是UTF-8编码的，所以任何ASCII的内容都要占一半多的空间。（译注：需要了解Java字符串序列化知识点）</p>
+<h4 id="另一个有效的途径"><a href="#另一个有效的途径" class="headerlink" title="另一个有效的途径"></a>另一个有效的途径</h4><p>你可能会记起来“<a href="http://www.javaworld.com/article/2077496/testing-debugging/java-tip-130--do-you-know-your-data-size-.html" target="_blank" rel="external">Java Tip 130:你是否知道你的数据大小</a>”这篇文章。它描述了一种基于创建大量的相同的实例并仔细测量JVM中已使用堆大小增加情况的技术。在适当的时候，这个想法很有效。我实际上会用它来本文中的替代方法。</p>
+<p>注意“Java Tip 130”的Sizeof类需要一个静态的JVM（这样堆的活动只是由于，测量线程对对象的分配和垃圾回收的请求），并且需要大量相同的对象实例。当你想要测量单个大对象（可能作为调试跟踪输出的一部分）时，这种方式并不奏效，特别是当你想要检查是什么导致这个对象如此巨大的时候。</p>
+<h4 id="什么是一个对象的大小"><a href="#什么是一个对象的大小" class="headerlink" title="什么是一个对象的大小"></a>什么是一个对象的大小</h4><p>上面的讨论突显出了一个哲学的观点：由于你经常处理对象图，一个对象大小的定义是什么？它只是你正常检查对象实例的大小还是这个实例所连接的整个数据图的大小呢？后者通常在实践中更加重要。你会看到，事情并不是总是如此明确，但是对于初学者，你可以遵循这种方法：</p>
+<ul>
+<li>一个对象实例可以通过统计所有非静态字段（包括定义在父类中的字段）测量（大概）大小</li>
+<li>不像C++，类方法和他们的virtuality(译注：啥意思？)对统计对象的大小没有影响</li>
+<li>超类接口对统计对象的大小没有影响（见本列表末尾注释）</li>
+<li>完整的对象大小可以作为根据起始对象的整个对象图形的闭包获得（译注：google翻译）</li>
+</ul>
+<h6 id="注意：任何Java接口的实现类仅仅是对这个接口进行标记，并不会添加在实现类中添加任何数据。事实上，JVM甚至不能验证接口的实现类是否提供了接口所需的所有方法：在当前规范中这是编译器的重要责任。"><a href="#注意：任何Java接口的实现类仅仅是对这个接口进行标记，并不会添加在实现类中添加任何数据。事实上，JVM甚至不能验证接口的实现类是否提供了接口所需的所有方法：在当前规范中这是编译器的重要责任。" class="headerlink" title="注意：任何Java接口的实现类仅仅是对这个接口进行标记，并不会添加在实现类中添加任何数据。事实上，JVM甚至不能验证接口的实现类是否提供了接口所需的所有方法：在当前规范中这是编译器的重要责任。"></a>注意：任何Java接口的实现类仅仅是对这个接口进行标记，并不会添加在实现类中添加任何数据。事实上，JVM甚至不能验证接口的实现类是否提供了接口所需的所有方法：在当前规范中这是编译器的重要责任。</h6><p>为了引导过程（译注：啥意思），对于原始数据类型，我使用由“Java Tip 130”的Sizeof类测量的物理大小。事实证明，对于普通的32位JVM机器，一个普通的java.lang.Object占用了8个字节，基本数据类型的最小物理大小通常能满足语言要求（除了布尔占用了一整个位）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&gt;  // java.lang.Object shell size in bytes:    </div><div class="line">&gt; public static final int OBJECT_SHELL_SIZE   	= 8;    </div><div class="line">&gt; public static final int OBJREF_SIZE             = 4;    </div><div class="line">&gt; public static final int LONG_FIELD_SIZE   	  	= 8;    </div><div class="line">&gt; public static final int INT_FIELD_SIZE      	= 4;    </div><div class="line">&gt; public static final int SHORT_FIELD_SIZE    	= 2;    </div><div class="line">&gt; public static final int CHAR_FIELD_SIZE     	= 2;   </div><div class="line">&gt; public static final int BYTE_FIELD_SIZE     	= 1;    </div><div class="line">&gt; public static final int BOOLEAN_FIELD_SIZE  	= 1;    </div><div class="line">&gt; public static final int DOUBLE_FIELD_SIZE   	= 8;    </div><div class="line">&gt; public static final int FLOAT_FIELD_SIZE    	= 4; </div><div class="line">&gt;</div></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>（重要的是要意思到，这些常量不会永久硬编码，必须独立测试给定的JVM）当然，对于对象字段的统计大小是很天真的，这忽略了在JVM中的内存对齐问题。内存对齐很重要（例如，“Java Tip 130”中的原始数组类型所示），但是我认为这样的追逐细节是没有意义的。这些细节不仅取决于JVM供应商，而且不受程序员的控制。我们的目标是获取一个对对象大小的良好猜测，并希望当一个类字段是多余的时候能得到一个提示；或者当一个字段是懒惰的；或者当需要更紧凑的嵌套数据结构时，等。对于绝对的物理精度你可以随时返回到“Java Tip 130”中的Sizeof类。</p>
+<p>为了帮助描述一个对象实例的构成内容，我们的工具将不仅仅计算大小，而且还构建一个有用的数据结构作为副产品：由IObjectProfileNodes组成的图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&gt; interface IObjectProfileNode</div><div class="line">&gt; &#123;</div><div class="line">&gt;     Object object ();</div><div class="line">&gt;     String name ();</div><div class="line">&gt;     </div><div class="line">&gt;     int size ();</div><div class="line">&gt;     int refcount ();</div><div class="line">&gt;     </div><div class="line">&gt;     IObjectProfileNode parent ();</div><div class="line">&gt;     IObjectProfileNode [] children ();</div><div class="line">&gt;     IObjectProfileNode shell ();</div><div class="line">&gt;     </div><div class="line">&gt;     IObjectProfileNode [] path ();</div><div class="line">&gt;     IObjectProfileNode root ();</div><div class="line">&gt;     int pathlength ();</div><div class="line">&gt;     </div><div class="line">&gt;     boolean traverse (INodeFilter filter, INodeVisitor visitor);</div><div class="line">&gt;     String dump ();</div><div class="line">&gt; &#125; // End of interface</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>//未完待续….</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Sizeof/" rel="tag"># Sizeof</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/14/test/" rel="next" title="个人博客搭建详解（Windows和Mac通用版）">
+                <i class="fa fa-chevron-left"></i> 个人博客搭建详解（Windows和Mac通用版）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="bainily" />
+          <p class="site-author-name" itemprop="name">bainily</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                    
+                      Twitter
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://databricks.com/blog" title="Databricks Blog" target="_blank">Databricks Blog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://www.infoq.com/" title="InfoQ" target="_blank">InfoQ</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://ifeve.com/" title="并发编程网" target="_blank">并发编程网</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#谬误：Sizeof-并不需要，因为Java的基础类型的大小是固定的"><span class="nav-number">1.</span> <span class="nav-text">谬误：Sizeof()并不需要，因为Java的基础类型的大小是固定的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#谬误：你可以通过序列化对象成一个字节流并查看字节流的长度来测量一个对象的大小"><span class="nav-number">2.</span> <span class="nav-text">谬误：你可以通过序列化对象成一个字节流并查看字节流的长度来测量一个对象的大小</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#另一个有效的途径"><span class="nav-number">3.</span> <span class="nav-text">另一个有效的途径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是一个对象的大小"><span class="nav-number">4.</span> <span class="nav-text">什么是一个对象的大小</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#注意：任何Java接口的实现类仅仅是对这个接口进行标记，并不会添加在实现类中添加任何数据。事实上，JVM甚至不能验证接口的实现类是否提供了接口所需的所有方法：在当前规范中这是编译器的重要责任。"><span class="nav-number">4.0.1.</span> <span class="nav-text">注意：任何Java接口的实现类仅仅是对这个接口进行标记，并不会添加在实现类中添加任何数据。事实上，JVM甚至不能验证接口的实现类是否提供了接口所需的所有方法：在当前规范中这是编译器的重要责任。</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">bainily</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("a3Ns4ayPdRHM2RHDhzK58EqC-gzGzoHsz", "131kbvY5knjauhO2jm72ynFl");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
