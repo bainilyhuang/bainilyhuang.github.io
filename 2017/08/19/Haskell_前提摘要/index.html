@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Haskell,函数式编程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="haskell 是惰性的。 通过在终端输入ghci进入交互界面。 修改交互界面的提示有两种方式。1:临时的，通过输入:set prompt “ghci&amp;gt; “ 将提示修改为ghci&amp;gt; 。2:永久性。在根目录下创建.ghci文件，并输入:set prompt “ghci&amp;gt; “ 保存，再重新进入交互界面即可生效。效果如下: 1234BainilyHuangdeMacBook-Pro:~">
+<meta name="keywords" content="Haskell,函数式编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Haskell_前提摘要">
+<meta property="og:url" content="http://yoursite.com/2017/08/19/Haskell_前提摘要/index.html">
+<meta property="og:site_name" content="bainily">
+<meta property="og:description" content="haskell 是惰性的。 通过在终端输入ghci进入交互界面。 修改交互界面的提示有两种方式。1:临时的，通过输入:set prompt “ghci&amp;gt; “ 将提示修改为ghci&amp;gt; 。2:永久性。在根目录下创建.ghci文件，并输入:set prompt “ghci&amp;gt; “ 保存，再重新进入交互界面即可生效。效果如下: 1234BainilyHuangdeMacBook-Pro:~">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-19T09:59:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Haskell_前提摘要">
+<meta name="twitter:description" content="haskell 是惰性的。 通过在终端输入ghci进入交互界面。 修改交互界面的提示有两种方式。1:临时的，通过输入:set prompt “ghci&amp;gt; “ 将提示修改为ghci&amp;gt; 。2:永久性。在根目录下创建.ghci文件，并输入:set prompt “ghci&amp;gt; “ 保存，再重新进入交互界面即可生效。效果如下: 1234BainilyHuangdeMacBook-Pro:~">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/19/Haskell_前提摘要/"/>
+
+
+
+
+
+  <title>Haskell_前提摘要 | bainily</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">bainily</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/19/Haskell_前提摘要/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="bainily">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bainily">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Haskell_前提摘要</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T14:19:27+08:00">
+                2017-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/Haskell/" itemprop="url" rel="index">
+                    <span itemprop="name">Haskell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/19/Haskell_前提摘要/" class="leancloud_visitors" data-flag-title="Haskell_前提摘要">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>haskell 是惰性的。</p>
+<p>通过在终端输入ghci进入交互界面。</p>
+<p>修改交互界面的提示有两种方式。1:临时的，通过输入:set prompt “ghci&gt; “ 将提示修改为ghci&gt; 。2:永久性。在根目录下创建.ghci文件，并输入:set prompt “ghci&gt; “ 保存，再重新进入交互界面即可生效。效果如下:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">BainilyHuangdeMacBook-Pro:~ bainilyhuang$ ghci</div><div class="line">GHCi, version 8.0.2: http://www.haskell.org/ghc/  :? for help</div><div class="line">Loaded GHCi configuration from /Users/bainilyhuang/.ghci</div><div class="line"><span class="meta">ghci&gt;</span></div></pre></td></tr></table></figure>
+<p>在表达式中，负数需要用括号。</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">5</span> * (<span class="number">-3</span>)</div></pre></td></tr></table></figure>
+<p>逻辑运算的值有两个:True和False。可以使用 &amp;&amp;，||，not 对逻辑值进行运算。通过==和/=两个函数对值进行判断生成逻辑值。</p>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>大部分函数是：前缀函数（函数名+空格+参数列表（空格分割参数））。</p>
+<p>一些函数是：中缀函数。</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; succ <span class="number">8</span></div><div class="line"><span class="number">9</span></div><div class="line"><span class="title">ghci</span>&gt; min <span class="number">9</span> <span class="number">10</span></div><div class="line"><span class="number">9</span></div><div class="line"><span class="title">ghci</span>&gt; min <span class="number">3.4</span> <span class="number">3.2</span></div><div class="line"><span class="number">3.2</span></div><div class="line"><span class="title">ghci</span>&gt; max <span class="number">100</span> <span class="number">101</span></div><div class="line"><span class="number">101</span></div><div class="line"><span class="title">ghci</span>&gt;</div></pre></td></tr></table></figure>
+<p>表达式中，函数拥有最高的优先级。(+也是函数呀？)</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; succ <span class="number">9</span> + max <span class="number">5</span> <span class="number">4</span> + <span class="number">1</span></div><div class="line"><span class="number">16</span></div><div class="line"><span class="title">ghci</span>&gt; (succ <span class="number">9</span>) + (max <span class="number">5</span> <span class="number">4</span>) + <span class="number">1</span></div><div class="line"><span class="number">16</span></div><div class="line"><span class="title">ghci</span>&gt; succ <span class="number">9</span> * <span class="number">10</span></div><div class="line"><span class="number">100</span></div></pre></td></tr></table></figure>
+<p>当函数参数有两个时候，可以使用反引号``将前缀函数改成中缀函数。</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; div <span class="number">92</span> <span class="number">10</span></div><div class="line"><span class="number">9</span></div><div class="line"><span class="title">ghci</span>&gt; <span class="number">92</span> `div` <span class="number">10</span></div><div class="line"><span class="number">9</span></div></pre></td></tr></table></figure>
+<h5 id="函数的声明调用"><a href="#函数的声明调用" class="headerlink" title="函数的声明调用"></a>函数的声明调用</h5><p>声明与调用类似。声明需要（函数名+空格+参数列表（空格分割参数）+空格+等号+函数体）。</p>
+<p>在你启动交互界面的目录下创建baby.hs文件(文件名关系不大)，输入:</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">doubleMe</span> x = x + x</div></pre></td></tr></table></figure>
+<p>保存。打开交互界面，输入:l baby装载。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> :l baby</div><div class="line">[1 of 1] Compiling Main             ( baby.hs, interpreted )</div><div class="line">Ok, modules loaded: Main.</div><div class="line"><span class="meta">ghci&gt;</span> doubleMe 9</div><div class="line">18</div></pre></td></tr></table></figure>
+<p>函数的定义没有先后的概念。（需要记住！）</p>
+<p>if语句是一个表达式，必须要返回值。所以if语句中的else语句不可省略。</p>
+<p>函数名首字母必须小写。函数名最后的单引号用来区分惰性或者严格求值。</p>
+<p>没有参数的函数被称为定义或者名字。</p>
+<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><p>列表：单类型数据结构。</p>
+<p>（在交互界面的必须使用let定义一个变量。文件中不需要）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> let lostNumbers = [4,8,15,16,23,42]</div><div class="line"><span class="meta">ghci&gt;</span> lostNumbers</div><div class="line">[4,8,15,16,23,42]</div></pre></td></tr></table></figure>
+<h5 id="拼接两个列表"><a href="#拼接两个列表" class="headerlink" title="拼接两个列表"></a>拼接两个列表</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ghci&gt; [1,2,3,4] ++ [9,19,11,12]</div><div class="line">[1,2,3,4,9,19,11,12]</div><div class="line">ghci&gt; &quot;hello&quot; ++ &quot; &quot; ++ &quot;world&quot;</div><div class="line">&quot;hello world&quot;</div><div class="line">ghci&gt; [&apos;w&apos;,&apos;o&apos;] ++ [&apos;o&apos;,&apos;t&apos;]</div><div class="line">&quot;woot&quot;</div></pre></td></tr></table></figure>
+<p>这里的字符串实际上是字符组成的列表。”hello”是[‘h’,’e’,’l’,’l’,’o’]的语法糖。处理列表的方式处理字符串。</p>
+<p>在列表头添加元素使用:（称为Cons）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> 'A' : " SMALL CAT"</div><div class="line">"A SMALL CAT"</div></pre></td></tr></table></figure>
+<p>其实，[‘h’,’e’,’l’,’l’,’o’]是’h’:’e’:’l’:’l’:’o’:[]的语法糖。</p>
+<h5 id="访问列表元素"><a href="#访问列表元素" class="headerlink" title="访问列表元素"></a>访问列表元素</h5><p>下标从0开始 函数 !!</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; <span class="string">"Steve Buscemi"</span> !! <span class="number">6</span></div><div class="line">'<span class="type">B'</span></div></pre></td></tr></table></figure>
+<p>列表里的列表长度可以不一，但是类型要一致。</p>
+<p>列表的比较？没啥实际意义吧。</p>
+<h5 id="常用的列表操作"><a href="#常用的列表操作" class="headerlink" title="常用的列表操作"></a>常用的列表操作</h5><p>head，tail ，last ，init</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> head [1,2,3,4,5]</div><div class="line">1</div><div class="line"><span class="meta">ghci&gt;</span> tail [1,2,3,4,5]</div><div class="line">[2,3,4,5]</div><div class="line"><span class="meta">ghci&gt;</span> last [1,2,3,4,5]</div><div class="line">5</div><div class="line"><span class="meta">ghci&gt;</span> init [1,2,3,4,5]</div><div class="line">[1,2,3,4]</div></pre></td></tr></table></figure>
+<p>四个函数运用在空列表上将会报错，所以需要判断。null 函数进行空列表的判断。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> null [1,2,3]</div><div class="line">False</div><div class="line"><span class="meta">ghci&gt;</span> null []</div><div class="line">True</div></pre></td></tr></table></figure>
+<p>length 函数返回列表的长度。也可以判断进行空列表的判断。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> length []</div><div class="line">0</div></pre></td></tr></table></figure>
+<p>reverse函数反转一个列表。</p>
+<p>take 一个数字和一个列表作为参数，返回指定的前几个元素。</p>
+<p>drop 一个数字和一个列表作为参数，删除指定的前几个元素。</p>
+<p>maximum/minimun 返回一个列表最大／最小元素，列表元素必须具有比较的性质。</p>
+<p>sum/product 返回列表的和与积。</p>
+<p>elem 判断一个元素是否包含于一个列表。使用中缀函数更好理解。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> reverse [1,2,3,4,5]</div><div class="line">[5,4,3,2,1]</div><div class="line"><span class="meta">ghci&gt;</span> take 3 [1,2,3,4,5]</div><div class="line">[1,2,3]</div><div class="line"><span class="meta">ghci&gt;</span> drop 3 [1,2,3,4,5]</div><div class="line">[4,5]</div><div class="line"><span class="meta">ghci&gt;</span> 3 `elem` [1,2,3,4,5]</div><div class="line">True</div></pre></td></tr></table></figure>
+<h3 id="区间"><a href="#区间" class="headerlink" title="区间"></a>区间</h3><p>区间是构造列表的一种方式。区间里的元素是可以枚举或者排序的。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> [1..20]</div><div class="line">[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]</div><div class="line"><span class="meta">ghci&gt;</span> ['a'..'z']</div><div class="line">"abcdefghijklmnopqrstuvwxyz"</div><div class="line"><span class="meta">ghci&gt;</span> ['K'..'Z']</div><div class="line">"KLMNOPQRSTUVWXYZ"</div></pre></td></tr></table></figure>
+<p>可以通过步长构造区间。（步长：第一个元素与第二元素之间的长度。然后加上限构成列表）。例如1到20的偶数与3的倍数列表：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> [2,4..20]</div><div class="line">[2,4,6,8,10,12,14,16,18,20]</div><div class="line"><span class="meta">ghci&gt;</span> [3,6..20]</div><div class="line">[3,6,9,12,15,18]</div></pre></td></tr></table></figure>
+<p>限制1：步长只能标明一次。限制2：通过一次步长很难满足用户需求。</p>
+<p>20到1的列表：（先构建空列表，然后比较第一个元素与上限）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> [20..1]</div><div class="line">[]</div><div class="line"><span class="meta">ghci&gt;</span> [20,19..1]</div><div class="line">[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]</div></pre></td></tr></table></figure>
+<p>不标明上限会得到无限列表。例如获取前13个3的倍数的列表：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> [3,6..13*3]</div><div class="line">[3,6,9,12,15,18,21,24,27,30,33,36,39]</div><div class="line"><span class="meta">ghci&gt;</span> take 13 [3,6..]</div><div class="line">[3,6,9,12,15,18,21,24,27,30,33,36,39]</div></pre></td></tr></table></figure>
+<p>生成无限列表的函数：</p>
+<p>cycle，repeat</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> take 10 (cycle [1,2,3])</div><div class="line">[1,2,3,1,2,3,1,2,3,1]</div><div class="line"><span class="meta">ghci&gt;</span> take 10 (repeat 10)</div><div class="line">[10,10,10,10,10,10,10,10,10,10]</div></pre></td></tr></table></figure>
+<p>repeat生成列表取前多少数据时候，用replicate更方便</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> replicate 3 10</div><div class="line">[10,10,10]</div></pre></td></tr></table></figure>
+<p>浮点数因为获取有限的精度，用于区间获取列表时候会有精度丢失问题！！！</p>
+<h3 id="列表推导式"><a href="#列表推导式" class="headerlink" title="列表推导式"></a>列表推导式</h3><p>作用：过滤，转换，组合列表。</p>
+<p>取前10个偶数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> [x * 2| x &lt;- [1..10]]</div><div class="line">[2,4,6,8,10,12,14,16,18,20]</div><div class="line"><span class="meta">ghci&gt;</span> take 10 [2,4..]</div><div class="line">[2,4,6,8,10,12,14,16,18,20]</div></pre></td></tr></table></figure>
+<p>取前10个大于等于12的偶数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> [x * 2|x &lt;- [1..10],x *2 &gt;= 12]</div><div class="line">[12,14,16,18,20]</div></pre></td></tr></table></figure>
+<p>取50到100之间所有除7余3的元素 （mod）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> [x | x &lt;- [50..100], x `mod` 7 == 3]</div><div class="line">[52,59,66,73,80,87,94]</div></pre></td></tr></table></figure>
+<p>以上都是过滤操作：从列表中筛出特定谓语的元素。</p>
+<p>还有一种过滤+转换。转换需要放在|前。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> [ if x &lt; 10 then "BOOM!" else "BANG!" | x &lt;- [1..20], odd x ]</div><div class="line">["BOOM!","BOOM!","BOOM!","BOOM!","BOOM!","BANG!","BANG!","BANG!","BANG!","BANG!"]</div></pre></td></tr></table></figure>
+<p>谓语可以有多个，列表也可以有多个。（组合列表）</p>
+<p>如果列表中的元素我们不关心可以用_作为占位符号。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> let length' xs = sum ([1| _ &lt;- xs])</div><div class="line"><span class="meta">ghci&gt;</span> length' [1..100]</div><div class="line">100</div></pre></td></tr></table></figure>
+<p>去除字符串中非大写字母</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> [c | c &lt;- "LDFKJdskfLDKF",c `elem` ['A'..'Z']]</div><div class="line">"LDFKJLDKF"</div></pre></td></tr></table></figure>
+<p>列表推导式可以是嵌套的</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> let xxs = [[1,3,5,2,3,1,2,4,5],[1,2,3,4,5,6,7,8,9],[1,2,3,2,1,6,3,1,3,2,3,6]]</div><div class="line"><span class="meta">ghci&gt;</span> [[x|x &lt;- xs, even x]|xs &lt;- xxs]</div><div class="line">[[2,2,4],[2,4,6,8],[2,2,6,2,6]]</div></pre></td></tr></table></figure>
+<p>我所理解的列表推导式：[转换|x &lt;-xs,过滤]。上面都可以用这种方式去理解。</p>
+<h3 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h3><p>类型不一，且固定的集合。</p>
+<h5 id="使用元组"><a href="#使用元组" class="headerlink" title="使用元组"></a>使用元组</h5><p>场景用途一：在用向量表示一个图时候，使用列表中的列表和使用列表元组差别就很大。</p>
+<p>一张平面图可以用[[1,2],[8,11],[4,5]]表示。但是当处理[[1,2],[8,11,5],[4,5]]时，我们判定它是个图就比较困难和繁琐。</p>
+<p>不同长度的元组类型不一样。相同长度不同元素的元组类型也不一样。所以当使用列表元组表示平面图是非常合适的。</p>
+<p>没有单个元素的元组。元组也有大小（感觉没实际用途）</p>
+<h5 id="序对"><a href="#序对" class="headerlink" title="序对"></a>序对</h5><p>fst/snd 取序对的首项和尾项。</p>
+<p>zip 组合两个列表成为一个序对类表。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> fst (1,3)</div><div class="line">1</div><div class="line"><span class="meta">ghci&gt;</span> snd (1,3)</div><div class="line">3</div><div class="line"><span class="meta">ghci&gt;</span> zip [1,2,3,4,5] ["a","b","c","d"]</div><div class="line">[(1,"a"),(2,"b"),(3,"c"),(4,"d")]</div><div class="line"><span class="meta">ghci&gt;</span> zip [1..]["a","b","c","d"]</div><div class="line">[(1,"a"),(2,"b"),(3,"c"),(4,"d")]</div></pre></td></tr></table></figure>
+<h5 id="例子：查找直角三角形"><a href="#例子：查找直角三角形" class="headerlink" title="例子：查找直角三角形"></a>例子：查找直角三角形</h5><p>1.三边都是整数。2.三边长度都小于10。3.周长和为24的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ghci&gt; [(a,b,c)| c&lt;-[1..10],a&lt;-[1..c],b&lt;-[1..a],a^2 + b^2 == c^2,a+b+c==24]</div><div class="line">[(8,6,10)]</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Haskell/" rel="tag"># Haskell</a>
+          
+            <a href="/tags/函数式编程/" rel="tag"># 函数式编程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/16/sizeOf/" rel="next" title="Java中的Sizeof(对象大小的重新审视)">
+                <i class="fa fa-chevron-left"></i> Java中的Sizeof(对象大小的重新审视)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="bainily" />
+          <p class="site-author-name" itemprop="name">bainily</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                    
+                      Twitter
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://databricks.com/blog" title="Databricks Blog" target="_blank">Databricks Blog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://www.infoq.com/" title="InfoQ" target="_blank">InfoQ</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://ifeve.com/" title="并发编程网" target="_blank">并发编程网</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数"><span class="nav-number">1.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数的声明调用"><span class="nav-number">1.0.1.</span> <span class="nav-text">函数的声明调用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表"><span class="nav-number">2.</span> <span class="nav-text">列表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#拼接两个列表"><span class="nav-number">2.0.1.</span> <span class="nav-text">拼接两个列表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#访问列表元素"><span class="nav-number">2.0.2.</span> <span class="nav-text">访问列表元素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常用的列表操作"><span class="nav-number">2.0.3.</span> <span class="nav-text">常用的列表操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#区间"><span class="nav-number">3.</span> <span class="nav-text">区间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表推导式"><span class="nav-number">4.</span> <span class="nav-text">列表推导式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#元组"><span class="nav-number">5.</span> <span class="nav-text">元组</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用元组"><span class="nav-number">5.0.1.</span> <span class="nav-text">使用元组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#序对"><span class="nav-number">5.0.2.</span> <span class="nav-text">序对</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#例子：查找直角三角形"><span class="nav-number">5.0.3.</span> <span class="nav-text">例子：查找直角三角形</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">bainily</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("a3Ns4ayPdRHM2RHDhzK58EqC-gzGzoHsz", "131kbvY5knjauhO2jm72ynFl");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
