@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Haskell,函数式编程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="为什么我要学习Haskell？Scala是Haskell的引路者，这句话是祖师爷Martin Odersky自己说的。我特别喜欢scala，但是苦于没有函数式的背景一直没有学到scala的精髓。scala虽然是多范式的语言，但scala社区主力军是以函数式为主的，且大部分都是从Haskell过来的，不学习Haskell等函数式语言终究理解不了scala的主旨。  Haskell拥有强大的类型系统">
+<meta name="keywords" content="Haskell,函数式编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Haskell_类型">
+<meta property="og:url" content="http://yoursite.com/2017/08/19/Haskell_类型/index.html">
+<meta property="og:site_name" content="bainily">
+<meta property="og:description" content="为什么我要学习Haskell？Scala是Haskell的引路者，这句话是祖师爷Martin Odersky自己说的。我特别喜欢scala，但是苦于没有函数式的背景一直没有学到scala的精髓。scala虽然是多范式的语言，但scala社区主力军是以函数式为主的，且大部分都是从Haskell过来的，不学习Haskell等函数式语言终究理解不了scala的主旨。  Haskell拥有强大的类型系统">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-20T03:01:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Haskell_类型">
+<meta name="twitter:description" content="为什么我要学习Haskell？Scala是Haskell的引路者，这句话是祖师爷Martin Odersky自己说的。我特别喜欢scala，但是苦于没有函数式的背景一直没有学到scala的精髓。scala虽然是多范式的语言，但scala社区主力军是以函数式为主的，且大部分都是从Haskell过来的，不学习Haskell等函数式语言终究理解不了scala的主旨。  Haskell拥有强大的类型系统">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/19/Haskell_类型/"/>
+
+
+
+
+
+  <title>Haskell_类型 | bainily</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">bainily</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/19/Haskell_类型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="bainily">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bainily">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Haskell_类型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T18:07:38+08:00">
+                2017-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/Haskell/" itemprop="url" rel="index">
+                    <span itemprop="name">Haskell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/19/Haskell_类型/" class="leancloud_visitors" data-flag-title="Haskell_类型">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>为什么我要学习Haskell？Scala是Haskell的引路者，这句话是祖师爷Martin Odersky自己说的。我特别喜欢scala，但是苦于没有函数式的背景一直没有学到scala的精髓。scala虽然是多范式的语言，但scala社区主力军是以函数式为主的，且大部分都是从Haskell过来的，不学习Haskell等函数式语言终究理解不了scala的主旨。</p>
+</blockquote>
+<p>Haskell拥有强大的类型系统。每个表达式都有明确的类型，并且一切皆类型。Haskell支持类型推导。</p>
+<h3 id="显示声明类型"><a href="#显示声明类型" class="headerlink" title="显示声明类型"></a>显示声明类型</h3><p>ghci检查类型时输入:t 表达式 就可以知道表达式的类型</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">ghci&gt;</span> :t 'a'</div><div class="line">'a' :: Char</div></pre></td></tr></table></figure>
+<p>::读作‘他的类型为’ 所以 ‘a’的类型为Char。类型的首字母必须大写。</p>
+<p>函数也有类型。上一章中并没有显示声明函数类型</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">removeNonUppercase</span> :: [<span class="type">Char</span>] -&gt; [<span class="type">Char</span>]</div><div class="line"><span class="title">removeNonUppercase</span> st = [c|c &lt;- st,c `elem` ['<span class="type">A'</span>..'<span class="type">Z'</span>]]</div></pre></td></tr></table></figure>
+<p>多个参数与返回类型都用-&gt;分割开，最后一个是返回类型。</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">addThree</span> :: <span class="type">Int</span> -&gt; <span class="type">Int</span> -&gt; <span class="type">Int</span> -&gt; <span class="type">Int</span></div><div class="line"><span class="title">addThree</span> a b c = a + b + c</div></pre></td></tr></table></figure>
+<h3 id="Haskell常见类型"><a href="#Haskell常见类型" class="headerlink" title="Haskell常见类型"></a>Haskell常见类型</h3><ul>
+<li>Int：整型（有边界，效率高）</li>
+<li>Integer：整型（无边界，效率低）</li>
+<li>Float：单精度浮点型</li>
+<li>Double：双精度浮点型</li>
+<li>Bool：布尔类型</li>
+<li>Char：Unicode字符类型，用单引号表示</li>
+<li>元组：取决于元素类型与个数，最多64个元素。()表示空元组，是类型值</li>
+</ul>
+<h3 id="类型变量"><a href="#类型变量" class="headerlink" title="类型变量"></a>类型变量</h3><p>声明函数类型的时候，可以使用类型变量而非确定的类型（确定的类型一定首字母大写）。看下head函数的类型    ：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; :t head</div><div class="line"><span class="title">head</span> :: [a] -&gt; a</div><div class="line"><span class="title">ghci</span>&gt; :t fst</div><div class="line"><span class="title">fst</span> :: (a, b) -&gt; a</div></pre></td></tr></table></figure>
+<p>head的类型是范型a的列表到a。</p>
+<p>fst的a，b并不是指a,b类型一定不一样。</p>
+<h3 id="类型类入门"><a href="#类型类入门" class="headerlink" title="类型类入门"></a>类型类入门</h3><p>如果一个函数名为特殊字符，则这个函数默认是中缀函数！！！！</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; (==) <span class="number">3</span> <span class="number">10</span></div><div class="line"><span class="type">False</span></div><div class="line"><span class="title">ghci</span>&gt; <span class="number">3</span> == <span class="number">10</span></div><div class="line"><span class="type">False</span></div><div class="line"><span class="title">ghci</span>&gt; :t (==)</div><div class="line">(==) :: <span class="type">Eq</span> a =&gt; a -&gt; a -&gt; <span class="type">Bool</span></div></pre></td></tr></table></figure>
+<p>中缀函数，使用前缀写法，检查类型，和传递给其他函数都需要加括号。</p>
+<p>=&gt; 的左侧称作‘类型约束’，</p>
+<p>Eq a =&gt; a -&gt; a -&gt; Bool，翻译：相等性函数取两个相同类型的值作为参数并返回一个布尔值，而这两个参数的类型同为Eq 类的实例。</p>
+<p>（个人理解：a -&gt; a -&gt; Bool 中a可以为任意类型，意思是两个类型相同的参数到Bool类型的映射函数，但是我们可以给a进行一下类型约束，让他满足某一类型，以约束他的范围）</p>
+<p>（个人理解：Eq类型类定义了==和/=两个函数。凡是在函数声明的时候约束为Eq类型类，调用该函数的参数类型必定要实现==与\=两个函数）</p>
+<h4 id="Eq类型类"><a href="#Eq类型类" class="headerlink" title="Eq类型类"></a>Eq类型类</h4><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; <span class="number">3</span> == <span class="number">5</span></div><div class="line"><span class="type">False</span></div><div class="line"><span class="title">ghci</span>&gt; <span class="number">4</span> /= <span class="number">3</span></div><div class="line"><span class="type">True</span></div></pre></td></tr></table></figure>
+<h4 id="Ord类型类"><a href="#Ord类型类" class="headerlink" title="Ord类型类"></a>Ord类型类</h4><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; :t (&gt;)</div><div class="line">(&gt;) :: <span class="type">Ord</span> a =&gt; a -&gt; a -&gt; <span class="type">Bool</span></div><div class="line"><span class="title">ghci</span>&gt; :t compare</div><div class="line"><span class="title">compare</span> :: <span class="type">Ord</span> a =&gt; a -&gt; a -&gt; <span class="type">Ordering</span></div></pre></td></tr></table></figure>
+<p>Ordering类型的值有3个：GT，LT，EQ 大于，小于，等于</p>
+<h4 id="Show类型类"><a href="#Show类型类" class="headerlink" title="Show类型类"></a>Show类型类</h4><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; :t show</div><div class="line"><span class="title">show</span> :: <span class="type">Show</span> a =&gt; a -&gt; <span class="type">String</span></div><div class="line"><span class="title">ghci</span>&gt; show <span class="number">3</span></div><div class="line"><span class="string">"3"</span></div><div class="line"><span class="title">ghci</span>&gt; show <span class="type">True</span></div><div class="line"><span class="string">"True"</span></div></pre></td></tr></table></figure>
+<p>show 是Show类型类的一个常用的函数。</p>
+<h4 id="Read类型类"><a href="#Read类型类" class="headerlink" title="Read类型类"></a>Read类型类</h4><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; :t read</div><div class="line"><span class="title">read</span> :: <span class="type">Read</span> a =&gt; <span class="type">String</span> -&gt; a</div><div class="line"><span class="title">ghci</span>&gt; read <span class="string">"True"</span> || <span class="type">False</span></div><div class="line"><span class="type">True</span></div><div class="line"><span class="title">ghci</span>&gt; read <span class="string">"[1,2,3,4,5]"</span> ++ [<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]</div><div class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]</div></pre></td></tr></table></figure>
+<p>以上 read “True” 编译器其实不知道要返回什么类型，只有通过后面的表达式|| False才会明白要返回什么类型。</p>
+<p>然后我们可以用类型注解来解决这个问题</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; read <span class="string">"True"</span></div><div class="line">*** <span class="type">Exception</span>: <span class="type">Prelude</span>.read: no parse</div><div class="line"><span class="title">ghci</span>&gt; read <span class="string">"True"</span> :: <span class="type">Bool</span></div><div class="line"><span class="type">True</span></div></pre></td></tr></table></figure>
+<h4 id="Enum类型类"><a href="#Enum类型类" class="headerlink" title="Enum类型类"></a>Enum类型类</h4><p>此类型有(),Bool,Char,Ordering,Int,Integer,Float,Double</p>
+<p>函数有succ,pred</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; :t succ</div><div class="line"><span class="title">succ</span> :: <span class="type">Enum</span> a =&gt; a -&gt; a</div><div class="line"><span class="title">ghci</span>&gt; :t pred</div><div class="line"><span class="title">pred</span> :: <span class="type">Enum</span> a =&gt; a -&gt; a</div><div class="line"><span class="title">ghci</span>&gt; ['a'..'e']</div><div class="line"><span class="string">"abcde"</span></div><div class="line"><span class="title">ghci</span>&gt; succ '<span class="type">B'</span></div><div class="line">'<span class="type">C'</span></div></pre></td></tr></table></figure>
+<h4 id="Bounded类型类"><a href="#Bounded类型类" class="headerlink" title="Bounded类型类"></a>Bounded类型类</h4><p>函数maxBound,minBound上下限</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; :t maxBound</div><div class="line"><span class="title">maxBound</span> :: <span class="type">Bounded</span> a =&gt; a</div><div class="line"><span class="title">ghci</span>&gt; maxBound :: <span class="type">Int</span></div><div class="line"><span class="number">9223372036854775807</span></div></pre></td></tr></table></figure>
+<p>Bounded a =&gt; a  这里的a是多态常量（只是理解吧）</p>
+<p>如果元组中项的类型都属于Bounded类型类，那么这个元组属于Bounded类型类</p>
+<h4 id="Num-类型类"><a href="#Num-类型类" class="headerlink" title="Num 类型类"></a>Num 类型类</h4><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; :t <span class="number">20</span></div><div class="line"><span class="number">20</span> :: <span class="type">Num</span> t =&gt; t</div></pre></td></tr></table></figure>
+<p>所有的数都是多态常量</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; <span class="number">20</span> :: <span class="type">Int</span></div><div class="line"><span class="number">20</span></div><div class="line"><span class="title">ghci</span>&gt; <span class="number">20</span> :: <span class="type">Float</span></div><div class="line"><span class="number">20.0</span></div><div class="line"><span class="title">ghci</span>&gt; <span class="number">20</span> :: <span class="type">Double</span></div><div class="line"><span class="number">20.0</span></div></pre></td></tr></table></figure>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="title">ghci</span>&gt; :t (*)</div><div class="line">(*) :: <span class="type">Num</span> a =&gt; a -&gt; a -&gt; a</div><div class="line"><span class="title">ghci</span>&gt; (<span class="number">5</span>::<span class="type">Int</span>) * (<span class="number">10</span>::<span class="type">Integer</span>)</div><div class="line"></div><div class="line">&lt;interactive&gt;:<span class="number">32</span>:<span class="number">13</span>: error:</div><div class="line">    • <span class="type">Couldn't</span> match expected <span class="class"><span class="keyword">type</span> ‘<span class="type">Int</span>’ with actual <span class="keyword">type</span> ‘<span class="type">Integer</span>’</span></div><div class="line">    • <span class="type">In</span> the second argument <span class="keyword">of</span> ‘(*)’, namely ‘(<span class="number">10</span> :: <span class="type">Integer</span>)’</div><div class="line">      <span class="type">In</span> the expression: (<span class="number">5</span> :: <span class="type">Int</span>) * (<span class="number">10</span> :: <span class="type">Integer</span>)</div><div class="line">      <span class="type">In</span> an equation for ‘it’: it = (<span class="number">5</span> :: <span class="type">Int</span>) * (<span class="number">10</span> :: <span class="type">Integer</span>)</div><div class="line"><span class="title">ghci</span>&gt; <span class="number">5</span> * (<span class="number">10</span>::<span class="type">Integer</span>)</div><div class="line"><span class="number">50</span></div></pre></td></tr></table></figure>
+<p>只有属于Show和Eq的实例类型才能成为Num类型类的实例（why？？？！！！）</p>
+<h4 id="Floating类型类-与-Integeral类型类"><a href="#Floating类型类-与-Integeral类型类" class="headerlink" title="Floating类型类 与 Integeral类型类"></a>Floating类型类 与 Integeral类型类</h4><p>sin, cos,sqrt</p>
+<p>fromIntegral</p>
+<h3 id="关于类型类"><a href="#关于类型类" class="headerlink" title="关于类型类"></a>关于类型类</h3><p>类型类定义的是抽象的接口。</p>
+<p>一个类型可以是多个类型类的实例。</p>
+<p>一个类型类可以包含多个类型作为实例。</p>
+<p>有时，一个类型在成为某一类型类实例以后才能成为另一个类型类的实例。比如，Ord的实例，必须成为Eq的实例后才能成为Ord的实例。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Haskell/" rel="tag"># Haskell</a>
+          
+            <a href="/tags/函数式编程/" rel="tag"># 函数式编程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/19/Haskell_前提摘要/" rel="next" title="Haskell_前提摘要">
+                <i class="fa fa-chevron-left"></i> Haskell_前提摘要
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="bainily" />
+          <p class="site-author-name" itemprop="name">bainily</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                    
+                      Twitter
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://databricks.com/blog" title="Databricks Blog" target="_blank">Databricks Blog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://www.infoq.com/" title="InfoQ" target="_blank">InfoQ</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://ifeve.com/" title="并发编程网" target="_blank">并发编程网</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#显示声明类型"><span class="nav-number">1.</span> <span class="nav-text">显示声明类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Haskell常见类型"><span class="nav-number">2.</span> <span class="nav-text">Haskell常见类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型变量"><span class="nav-number">3.</span> <span class="nav-text">类型变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型类入门"><span class="nav-number">4.</span> <span class="nav-text">类型类入门</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Eq类型类"><span class="nav-number">4.1.</span> <span class="nav-text">Eq类型类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ord类型类"><span class="nav-number">4.2.</span> <span class="nav-text">Ord类型类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Show类型类"><span class="nav-number">4.3.</span> <span class="nav-text">Show类型类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Read类型类"><span class="nav-number">4.4.</span> <span class="nav-text">Read类型类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Enum类型类"><span class="nav-number">4.5.</span> <span class="nav-text">Enum类型类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bounded类型类"><span class="nav-number">4.6.</span> <span class="nav-text">Bounded类型类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Num-类型类"><span class="nav-number">4.7.</span> <span class="nav-text">Num 类型类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Floating类型类-与-Integeral类型类"><span class="nav-number">4.8.</span> <span class="nav-text">Floating类型类 与 Integeral类型类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于类型类"><span class="nav-number">5.</span> <span class="nav-text">关于类型类</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">bainily</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("a3Ns4ayPdRHM2RHDhzK58EqC-gzGzoHsz", "131kbvY5knjauhO2jm72ynFl");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
